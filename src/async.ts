@@ -6,7 +6,9 @@ import { Database } from './supabase/types'
 const supabaseUrl = 'https://zpccgadpnkevosjdgzby.supabase.co'
 // made it obvious in the logs hopefully!
 // console.log(process.env.SUPABASE_KEY)
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY ?? 'no-key-set'
+let supabaseKey = import.meta.env.VITE_SUPABASE_KEY ?? 'no-key-set'
+// hopefully thats not confusing
+supabaseKey = process !== undefined ? process.env.VITE_SUPABASE_KEY : supabaseKey
 const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 // TODO #rm 
