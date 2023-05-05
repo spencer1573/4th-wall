@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Locations, Contacts, ContactBase } from './types'
+import { Locations, Contacts, ContactBase, Contact } from './types'
 import { createClient } from '@supabase/supabase-js'
 import { Database } from './supabase/types'
 
@@ -56,14 +56,13 @@ export const getContacts = async (): Promise<Contacts> => {
 // TODO #fix
 export const saveContact = async (contact: ContactBase): Promise<Contacts | null> => {
 
-  console.log('contact ', contact)
-
   const { data, error } = await supabase
     .from('contacts')
     .insert([
       { ...contact },
     ])
   
+  // TODO - figure out what comes back and typescript for it
   return data as Contacts | null
 
 }
@@ -74,4 +73,16 @@ export const saveContact = async (contact: ContactBase): Promise<Contacts | null
 // export const updateContact = (contact) => simulateSlowApiCall(axios.put(`http://localhost:3004/contacts/${contact.id}`, contact));
 
 // TODO #fix
-// export const deleteContact = (contact) => simulateSlowApiCall(axios.delete(`http://localhost:3004/contacts/${contact.id}`, contact));
+export const deleteContact = async (contact: Contact) => { 
+
+  console.log('contact ', contact)
+  
+  const { data, error } = await supabase
+    .from('contacts')
+    .delete()
+    .eq('id', contact.id)
+
+    // TODO - figure out what comes back and typescript for it
+    return data as Contact | null
+
+}

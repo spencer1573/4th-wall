@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 // TODO #rm 
 // import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
 // import { Menu } from '@mui/icons-material';
-import { getContacts, getLocations, saveContact } from './async';
+import { getContacts, getLocations, saveContact, deleteContact } from './async';
 import { Contacts, Locations, Contact, Location, ContactBase } from './types'
 import { TableTextField } from './components/TableTextField'
 
@@ -124,13 +124,14 @@ function App() {
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{contact.phone}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{findLocation(contact)}</td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                          {/* TODO - won't get to this should be a button */}
+                          <a href="#"  className="text-indigo-600 hover:text-indigo-900">
                             Edit<span className="sr-only">, {contact.id}</span>
                           </a>
                         </td>
                         {/* TODO - won't get to add icon for this */}
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <a href="#" className="text-red-600 hover:text-red-900">
+                          <a href="#" onClick={() => deleteContact(contact)} className="text-red-600 hover:text-red-900">
                             Delete<span className="sr-only">, {contact.id}</span>
                           </a>
                         </td>
