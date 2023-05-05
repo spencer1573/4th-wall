@@ -54,7 +54,7 @@ export const getContacts = async (): Promise<Contacts> => {
 } 
 
 // TODO #fix
-export const saveContact = async (contact: ContactBase): Promise<Contacts | null> => {
+export const saveContact = async (contact: ContactBase) => {
 
   const { data, error } = await supabase
     .from('contacts')
@@ -64,7 +64,7 @@ export const saveContact = async (contact: ContactBase): Promise<Contacts | null
     .select()
   
   // TODO - figure out what comes back and typescript for it
-  return data as Contacts | null
+  return data as Contact | null
 
 }
 
@@ -79,7 +79,7 @@ export const updateContact = async (contact: Contact) => {
     .eq('id', contact.id)
     .select() 
 
-  return data as Contacts | null
+  return data as Contact | null
 
 }
 
@@ -96,6 +96,6 @@ export const deleteContact = async (contact: Contact) => {
     .select()
 
     // TODO - figure out what comes back and typescript for it
-    return data as Contacts | null
+    return data as Contact | null
 
 }

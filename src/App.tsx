@@ -58,6 +58,10 @@ function App() {
       .catch(console.error);
   }, [])
 
+  const handleAdd = async (addContact: ContactBase) => {
+    const contacts = await saveContact(addContact)
+  } 
+
   const handleSave = async () => {
     // TODO - this needs to be refactored
     // its confusing having update and edit
@@ -202,7 +206,7 @@ function App() {
                       {/* will always be salt lake */}
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Always SLC (get to later)</td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a href="#" onClick={() => saveContact(addContact)} className="text-indigo-600 hover:text-indigo-900">
+                        <a href="#" onClick={() => handleAdd(addContact)} className="text-indigo-600 hover:text-indigo-900">
                           Add<span className="sr-only">, add contact</span>
                         </a>
                       </td>
