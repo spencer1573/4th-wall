@@ -1,18 +1,8 @@
-// TODO #rm useRef
-import { useRef, useState } from "react";
-
 // TODO #rm 
 export const TableTextField = (props: { value: string | number, onChange: (value: string | number) => void }) => {
     // TODO - won't get to fix tabs 
     // fiddling with the linter
     // on my machine will fix it
-    // const [value, setValue] = useState('');
-
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     console.log('e tar', e.target.value)
-    //     setValue(e.target.value)
-    // }
-
     return (
         <>
             {/* this td should be seperate from the input  */}
