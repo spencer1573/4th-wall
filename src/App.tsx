@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 // TODO #rm 
 // import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
 // import { Menu } from '@mui/icons-material';
-import { getContacts, getLocations, saveContact, deleteContact } from './async';
+import { getContacts, getLocations, saveContact, deleteContact, updateContact } from './async';
 import { Contacts, Locations, Contact, Location, ContactBase } from './types'
 import { TableTextField } from './components/TableTextField'
 
@@ -16,6 +16,20 @@ function App() {
     locationId: 2,
     phone: ''
   } as ContactBase); 
+
+  const editContactDefault = {
+    id: 1,
+    firstName: '',
+    lastName: '',
+    locationId: 2,
+    phone: ''
+  } 
+
+  const [editContact, setEditContact] = useState<Contact>({
+    ...editContactDefault
+  }); 
+
+  const [editModeId, setEditModeId] = useState<number>();
 
   // TODO #rm 
   // this was not working 
@@ -43,6 +57,22 @@ function App() {
     fetchAndSetData()
       .catch(console.error);
   }, [])
+
+  const handleSave = async () => {
+    // TODO - this needs to be refactored
+    // its confusing having update and edit
+    // used interchangbly 
+    if (updateContact !== undefined) {
+      await updateContact(editContact as Contact)
+    }
+    setEditModeId(-1)
+    setEditContact({ ...editContactDefault })
+  }
+
+  const handleUpdate = (contact: Contact) => {
+    setEditModeId(contact.id)
+    setEditContact(contact)
+  }
 
   const findLocation = (contact: Contact) => {
     // I know how to use a ternary but i figured this line was getting a litte 
@@ -74,6 +104,9 @@ function App() {
             <h1 className="text-base font-semibold leading-6 text-gray-900">4th wall</h1>
             <p className="mt-2 text-sm text-gray-700">
               A list of your contacts and important info.
+            </p>
+            <p className="mt-2 text-sm text-red-700">
+              *refresh after you make a change and hit a button. need to finish.
             </p>
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -115,26 +148,47 @@ function App() {
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {contacts && contacts.map((contact) => (
                       <tr key={contact.id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {contact.firstName}
-                        </td>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {contact.lastName}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{contact.phone}</td>
+                        {editModeId !== contact.id && 
+                          <>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {contact.firstName}
+                            </td>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {contact.lastName}
+                            </td>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{contact.phone}</td>
+                          </>
+                        }
+                        {/* TODO -- needs to be rethought how to truthy these */}
+                        {/* i think it would be best to put them both in 
+                        a component that flips between input and display */}
+                        {updateContact !== undefined && editModeId === contact.id && 
+                          <>
+                            <TableTextField value={editContact.firstName} onChange={(value: string | number) => setEditContact({ ...editContact, firstName: value as string})}/>
+                            <TableTextField value={editContact.lastName} onChange={(value: string | number) => setEditContact({ ...editContact, lastName: value as string})}/>
+                            <TableTextField value={editContact.phone} onChange={(value: string | number) => setEditContact({ ...editContact, phone: value as string})}/>
+                          </>
+                        } 
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{findLocation(contact)}</td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                           {/* TODO - won't get to this should be a button */}
-                          <a href="#"  className="text-indigo-600 hover:text-indigo-900">
-                            Edit<span className="sr-only">, {contact.id}</span>
+                          {/* TODO - maybe update and edit should be called the same thing edit */}
+                          <a href="#" onClick={() => handleUpdate(contact)}  className="text-indigo-600 hover:text-indigo-900">
+                            {editModeId !== contact.id ? 'Edit' : ''}<span className="sr-only">, {contact.id}</span>
                           </a>
                         </td>
+                        {editModeId === contact.id && <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          {/* TODO - won't get to this should be a button */}
+                          <a href="#" onClick={() => handleSave()}  className="text-green-600 hover:text-green-900">
+                            Save<span className="sr-only">, {contact.id}</span>
+                          </a>
+                        </td>}
                         {/* TODO - won't get to add icon for this */}
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        {editModeId !== contact.id && <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                           <a href="#" onClick={() => deleteContact(contact)} className="text-red-600 hover:text-red-900">
                             Delete<span className="sr-only">, {contact.id}</span>
                           </a>
-                        </td>
+                        </td>}
                       </tr>
                     ))}
                     {/*  TODO put this in a component */}

@@ -61,6 +61,7 @@ export const saveContact = async (contact: ContactBase): Promise<Contacts | null
     .insert([
       { ...contact },
     ])
+    .select()
   
   // TODO - figure out what comes back and typescript for it
   return data as Contacts | null
@@ -70,7 +71,18 @@ export const saveContact = async (contact: ContactBase): Promise<Contacts | null
 
 
 // TODO #fix
-// export const updateContact = (contact) => simulateSlowApiCall(axios.put(`http://localhost:3004/contacts/${contact.id}`, contact));
+export const updateContact = async (contact: Contact) => {
+
+  const { data, error } = await supabase
+    .from('contacts')
+    .update({ ...contact })
+    .eq('id', contact.id)
+    .select() 
+
+  return data as Contacts | null
+
+}
+
 
 // TODO #fix
 export const deleteContact = async (contact: Contact) => { 
@@ -81,8 +93,9 @@ export const deleteContact = async (contact: Contact) => {
     .from('contacts')
     .delete()
     .eq('id', contact.id)
+    .select()
 
     // TODO - figure out what comes back and typescript for it
-    return data as Contact | null
+    return data as Contacts | null
 
 }
