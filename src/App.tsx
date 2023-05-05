@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-// TODO #rm 
-// import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
-// import { Menu } from '@mui/icons-material';
+// TODO #remove material stuff from package.json by npm uninstalling it
 import { getContacts, getLocations, saveContact, deleteContact, updateContact } from './async';
 import { Contacts, Locations, Contact, Location, ContactBase } from './types'
 import { TableTextField } from './components/TableTextField'
@@ -30,19 +28,6 @@ function App() {
   }); 
 
   const [editModeId, setEditModeId] = useState<number>();
-
-  // TODO #rm 
-  // this was not working 
-  // const refetch = false;
-
-  // TODO #rm/use
-  // useEffect(async () => {
-  //   const contacts: Contacts = await getContacts();
-  //   setContacts(contacts);
-
-  //   const locations: Locations = await getLocations();
-  //   setLocations(locations);
-  // }, [refetch]);
 
   useEffect(() => {
     // TODO refactor this
@@ -101,6 +86,8 @@ function App() {
 
   return (
     <>
+    {/* TODO IMPORTANT all of this was added from tailwind ui 
+      - it needs to be broken up into multiple components  */}
     <div className="mt-16">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
