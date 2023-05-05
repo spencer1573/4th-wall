@@ -32,6 +32,20 @@ export interface Database {
           phone?: string
         }
       }
+      locations: {
+        Row: {
+          id: number
+          name: string
+        }
+        Insert: {
+          id?: number
+          name: string
+        }
+        Update: {
+          id?: number
+          name?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

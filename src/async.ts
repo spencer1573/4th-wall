@@ -21,11 +21,19 @@ const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 //Locations
 export const getLocations = async (): Promise<Locations> => {
-  const response = await axios.get('http://localhost:3004/locations')
+  // TODO #rm
+  // const response = await axios.get('http://localhost:3004/locations')
   // TODO #rm
   // console.log('response', response)
   // console.log('data', response.data)
-  return response.data 
+  // return response.data 
+  let { data: locations, error } = await supabase
+    .from('locations')
+    .select('*')
+  
+  console.log('location ', locations)
+
+  return locations as Locations
 } 
 
 
@@ -35,13 +43,14 @@ export const getLocations = async (): Promise<Locations> => {
 
 // Contacts
 
+// TODO -- refactor redundant type 
 export const getContacts = async (): Promise<Contacts> => {
 
   let { data: contacts, error } = await supabase
     .from('contacts')
     .select('*')
 
-  return contacts ?? []
+  return contacts as Contacts
 } 
 
 // TODO #fix

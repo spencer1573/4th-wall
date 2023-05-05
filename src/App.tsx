@@ -44,9 +44,13 @@ function App() {
     // to be refactored
     let name = ''
     let location
+    // console.log('locations ', locations)
+    console.log('contact ', contact.locationId)
     if (locations && locations.length) {
       // locations.find((location) => location.id === contact.locationId).name
-      location = location && locations.length ? locations.find((location) => location.id === contact.locationId) : {}
+      location = locations && locations.length ? locations.find((location) =>  {
+        return location.id === contact.locationId
+      }) : {}
     }
     return location && location.name ? location.name : ''
   }
