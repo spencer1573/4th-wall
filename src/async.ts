@@ -56,6 +56,8 @@ export const getContacts = async (): Promise<Contacts> => {
 // TODO #fix
 export const saveContact = async (contact: ContactBase): Promise<Contacts | null> => {
 
+  console.log('contact ', contact)
+
   const { data, error } = await supabase
     .from('contacts')
     .insert([

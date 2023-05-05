@@ -2,14 +2,24 @@ import { useEffect, useState } from 'react';
 // TODO #rm 
 // import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
 // import { Menu } from '@mui/icons-material';
-import { getContacts, getLocations } from './async';
-import { Contacts, Locations, Contact, Location } from './types'
+import { getContacts, getLocations, saveContact } from './async';
+import { Contacts, Locations, Contact, Location, ContactBase } from './types'
+import { TableTextField } from './components/TableTextField'
 
 function App() {
   const [contacts, setContacts] = useState<Contacts | undefined>([]);
   const [locations, setLocations] = useState<Locations | undefined >([]);
 
-  const refetch = false;
+  const [addContact, setAddContact] = useState<ContactBase>({ 
+    firstName: '',
+    lastName: '',
+    locationId: 2,
+    phone: ''
+  } as ContactBase); 
+
+  // TODO #rm 
+  // this was not working 
+  // const refetch = false;
 
   // TODO #rm/use
   // useEffect(async () => {
@@ -83,7 +93,10 @@ function App() {
                   <thead className="bg-gray-50">
                     <tr>
                       <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                        Name
+                        First Name
+                      </th>
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                        Last Name
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                         Phone
@@ -94,13 +107,19 @@ function App() {
                       <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                         <span className="sr-only">Edit</span>
                       </th>
+                      <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                        <span className="sr-only">Delete</span>
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {contacts && contacts.map((contact) => (
                       <tr key={contact.id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {contact.firstName} {contact.lastName}
+                          {contact.firstName}
+                        </td>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                          {contact.lastName}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{contact.phone}</td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{findLocation(contact)}</td>
@@ -109,8 +128,31 @@ function App() {
                             Edit<span className="sr-only">, {contact.id}</span>
                           </a>
                         </td>
+                        {/* TODO - won't get to add icon for this */}
+                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                          <a href="#" className="text-red-600 hover:text-red-900">
+                            Delete<span className="sr-only">, {contact.id}</span>
+                          </a>
+                        </td>
                       </tr>
                     ))}
+                    {/*  TODO put this in a component */}
+                    <tr key="-1">
+                      {/* TODO - won't get to -- phone validation */}
+                      {/* TODO - won't get to -- there is an easier way to make this on change more dry*/}
+                      <TableTextField value={addContact.firstName} onChange={(value: string | number) => setAddContact({ ...addContact, firstName: value as string})}/>
+                      <TableTextField value={addContact.lastName} onChange={(value: string | number) => setAddContact({ ...addContact, lastName: value as string})}/>
+                      <TableTextField value={addContact.phone} onChange={(value: string | number) => setAddContact({ ...addContact, phone: value as string})}/>
+                      {/* TODO - wont get to dropdown for this */}
+                      {/* will always be salt lake */}
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Always SLC (get to later)</td>
+                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <a href="#" onClick={() => saveContact(addContact)} className="text-indigo-600 hover:text-indigo-900">
+                          Add<span className="sr-only">, add contact</span>
+                        </a>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
