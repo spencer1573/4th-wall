@@ -8,7 +8,7 @@ const supabaseUrl = 'https://zpccgadpnkevosjdgzby.supabase.co'
 // console.log(process.env.SUPABASE_KEY)
 let supabaseKey = import.meta.env.VITE_SUPABASE_KEY ?? 'no-key-set'
 // hopefully thats not confusing
-supabaseKey = process !== undefined ? process.env.VITE_SUPABASE_KEY : supabaseKey
+supabaseKey = process.env.VITE_SUPABASE_KEY ? process.env.VITE_SUPABASE_KEY : supabaseKey
 const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 // TODO #rm 
