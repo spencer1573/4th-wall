@@ -12,21 +12,9 @@ supabaseKey = process.env.VITE_SUPABASE_KEY ?? supabaseKey
 
 const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
-// TODO #rm 
-// const simulateSlowApiCall = (promise) => {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => promise.then(resolve).catch(reject), 2000)
-//   })
-// }
 
 //Locations
 export const getLocations = async (): Promise<Locations> => {
-  // TODO #rm
-  // const response = await axios.get('http://localhost:3004/locations')
-  // TODO #rm
-  // console.log('response', response)
-  // console.log('data', response.data)
-  // return response.data 
   let { data: locations, error } = await supabase
     .from('locations')
     .select('*')
@@ -37,14 +25,8 @@ export const getLocations = async (): Promise<Locations> => {
 } 
 
 
-// TODO #rm 
-// export const getLocations = () => simulateSlowApiCall(axios.get('http://localhost:3004/locations'));
-
-
 // Contacts
-
-// TODO -- refactor redundant type 
-export const getContacts = async (): Promise<Contacts> => {
+export const getContacts = async () => {
 
   let { data: contacts, error } = await supabase
     .from('contacts')
@@ -53,7 +35,7 @@ export const getContacts = async (): Promise<Contacts> => {
   return contacts as Contacts
 } 
 
-// TODO #fix
+// Save/Add contacts
 export const saveContact = async (contact: ContactBase) => {
 
   const { data, error } = await supabase
@@ -63,14 +45,11 @@ export const saveContact = async (contact: ContactBase) => {
     ])
     .select()
   
-  // TODO - figure out what comes back and typescript for it
   return data as Contact | null
 
 }
 
-
-
-// TODO #fix
+// Update/Edit contact
 export const updateContact = async (contact: Contact) => {
 
   const { data, error } = await supabase
@@ -83,8 +62,7 @@ export const updateContact = async (contact: Contact) => {
 
 }
 
-
-// TODO #fix
+// Delete contact
 export const deleteContact = async (contact: Contact) => { 
 
   console.log('contact ', contact)
@@ -95,7 +73,6 @@ export const deleteContact = async (contact: Contact) => {
     .eq('id', contact.id)
     .select()
 
-    // TODO - figure out what comes back and typescript for it
     return data as Contact | null
 
 }
