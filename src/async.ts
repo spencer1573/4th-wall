@@ -1,5 +1,12 @@
 import axios from 'axios';
 import { Locations, Contacts } from './types'
+import { createClient } from '@supabase/supabase-js'
+import { Database } from 'lib/database.types'
+
+const supabaseUrl = 'https://zpccgadpnkevosjdgzby.supabase.co'
+// made it obvious in the logs hopefully!
+const supabaseKey = process.env.SUPABASE_KEY ?? 'no-key-set'
+const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 // TODO #rm 
 // const simulateSlowApiCall = (promise) => {
@@ -26,11 +33,18 @@ export const getLocations = async (): Promise<Locations> => {
 
 // TODO #fix
 export const getContacts = async (): Promise<Contacts> => {
+
+  // TODO #fix
+  // let { data: contacts, error } = await supabase
+  //   .from('contacts')
+  //   .select('*')
+
+  // TODO #rm 
   const response = await axios.get('http://localhost:3004/contacts')
   // TODO #rm
   // console.log('response', response)
   // console.log('data', response.data)
-  return response.data 
+  return response.data
 } 
 
 // TODO #fix
