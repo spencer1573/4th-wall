@@ -114,7 +114,12 @@
  
         [ ] -- some sort of state management
 
+```
    
+## Final Thoughts
+
+
+```
 
    -- realizations/reflection 
 
