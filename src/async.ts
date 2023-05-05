@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { Locations, Contacts } from './types'
+import { Locations, Contacts, ContactBase } from './types'
 import { createClient } from '@supabase/supabase-js'
 import { Database } from './supabase/types'
 
 const supabaseUrl = 'https://zpccgadpnkevosjdgzby.supabase.co'
-// made it obvious in the logs hopefully!
-// console.log(process.env.SUPABASE_KEY)
+
+// this is the variable system available in vite 
 let supabaseKey = import.meta.env.VITE_SUPABASE_KEY ?? 'no-key-set'
-// TODO #refactor this
-// hopefully thats not confusing
-supabaseKey = process.env.VITE_SUPABASE_KEY ? process.env.VITE_SUPABASE_KEY : supabaseKey
+// this process variable is only available in prod (vercel)
+supabaseKey = process.env.VITE_SUPABASE_KEY ?? supabaseKey
+
 const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 // TODO #rm 
@@ -54,7 +54,19 @@ export const getContacts = async (): Promise<Contacts> => {
 } 
 
 // TODO #fix
-// export const saveContact = (contact) => simulateSlowApiCall(axios.post('http://localhost:3004/contacts', contact));
+export const saveContact = async (contact: ContactBase): Promise<Contacts | null> => {
+
+  const { data, error } = await supabase
+    .from('contacts')
+    .insert([
+      { ...contact },
+    ])
+  
+  return data as Contacts | null
+
+}
+
+
 
 // TODO #fix
 // export const updateContact = (contact) => simulateSlowApiCall(axios.put(`http://localhost:3004/contacts/${contact.id}`, contact));
