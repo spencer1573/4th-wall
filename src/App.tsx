@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+// TODO #rm 
+// import { AppBar, Button, Grid, IconButton, Paper, Toolbar, Typography } from '@mui/material';
+// import { Menu } from '@mui/icons-material';
 import { getContacts, getLocations } from './async';
 import { Contacts, Locations, Contact, Location } from './types'
 
@@ -52,7 +53,7 @@ function App() {
 
   return (
     <>
-      <AppBar position='static'>
+      {/* <AppBar position='static'>
         <Toolbar>
           <IconButton edge='start' aria-label='menu'>
             <Menu />
@@ -63,12 +64,15 @@ function App() {
       </AppBar>
       <Grid container spacing={2}>
         {/* becuase contacts can be undefined added a truthy value here */}
-        {contacts && contacts.map((contact) => (
+        {/* {contacts && contacts.map((contact) => (
           <Grid key={contact.id} item xs={12}>
             <Paper>{`${contact.firstName} ${contact.lastName} - ${findLocation(contact)}`}</Paper>
           </Grid>
-        ))}
-      </Grid>
+        ))} */}
+      {/* </Grid> */}
+      <h1 className="text-3xl font-bold underline">
+        Hello world!
+      </h1>
     </>
   );
 }
